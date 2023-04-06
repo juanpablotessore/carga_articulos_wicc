@@ -283,12 +283,12 @@ def get_categories(browser):
 
 
 def process_authors(authors):
-    html = '<a href = "mailto:{mail}"<span class ="dashicons dashicons-email-alt mailto"></span></a>, '
+    html = '{name}<a href = "mailto:{mail}"<span class ="dashicons dashicons-email-alt mailto"></span></a>, '
     processed = ''
     for author in authors.split(',\n'):
         name = author[:author.rfind(' ')].strip()
         mail = author[author.rfind(' '):]
-        processed += f'{name}{html.format(mail=mail)}'
+        processed += html.format(name=name, mail=mail)
     return processed[:-2]
 
 
