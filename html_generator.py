@@ -21,7 +21,7 @@ SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/spreadsheets.readonly',
           'https://mail.google.com/']
 
-# Carpetas con los archivos de cada workshop WICC 2023
+# Carpetas de drive con los archivos de cada workshop WICC 2023
 WICC_FOLDERS_DICTIONARY = {
     'ARSO': {'posters': '1efrTNI4z1QtJqbKfVhBvku62kQFBkKC1',
              'audio_video': '1hP7Gih6lgSEUTe9SE4_D9MbUtRkZsYeH'},
