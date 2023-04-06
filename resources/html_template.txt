@@ -1,0 +1,14 @@
+<div class="main-container">
+    <div class="data-container">
+        <h1 class="title">{title}</h1>
+        <p class="subtitle">{subtitle}</p>
+        <p class="workshop">Workshop:  <a class="{workshop_class}" href="{workshop_link}">{workshop}</a></p>
+        <div class="downloadPdf-container"><img class="download-img" src="/wp-content/posters/download.gif">
+            <a class="pdf-download" href="https://drive.google.com/uc?id={pdf}&amp;export=download">
+                Descargar pdf
+            </a>
+        </div>
+        <audio controls="controls"><source src="https://docs.google.com/uc?export=download&id={audio}"/>
+    </div>
+    <iframe class="pdf-viewer" src="https://drive.google.com/file/d/{preview}/preview" frameborder="0"/>
+</div>
