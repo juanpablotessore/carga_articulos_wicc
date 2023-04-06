@@ -11,15 +11,15 @@ from googleapiclient.errors import HttpError
 import robobrowser
 import getpass
 
-# If modifying these scopes, delete the file token.json.
+############################################################
+#                                                          #
+#       Google Drive authentication and resources          #
+#                                                          #
+############################################################
+
 SCOPES = ['https://www.googleapis.com/auth/drive',
           'https://www.googleapis.com/auth/spreadsheets.readonly',
           'https://mail.google.com/']
-
-WICC_URL = {'t': 'https://wicc2023.test.unnoba.edu.ar/',
-            'p': 'https://wicc2023.unnoba.edu.ar/'}
-
-ENVIRONMENT = None
 
 # Carpetas con los archivos de cada workshop WICC 2023
 WICC_FOLDERS_DICTIONARY = {
@@ -50,6 +50,24 @@ WICC_FOLDERS_DICTIONARY = {
     'TIAE': {'posters': '1f20MRPEVvX2xddaFxrtSZ1U9ERrupP54',
              'audio_video': '1vs0KlkZA5-ZyfTpysqi6biFxtbEqx4wk'}
 }
+
+# Spreadsheet con los datos de los artículos
+INDEX_FILE_ID = '1hOE9pKmfSTRQGrQXNS1O785YWmm2LvZBrUZHK8Tmjm4'
+# Rango de celdas que quieres obtener
+INDEX_FILE_RANGE = 'Sheet1!B1:H174'
+# Pickle con la lista de archivos subidos
+PICKLE_FILE_ID = {'t': '1H96Z5OQauTEk7Ya5F0xE7qABM0NWHU1A', 'p': '1tXzKqjsz1qy-y5rpIhvKEu33GZDT7PfB'}
+
+############################################################
+#                                                          #
+#                  WICC system resources                   #
+#                                                          #
+############################################################
+
+ENVIRONMENT = None
+
+WICC_URL = {'t': 'https://wicc2023.test.unnoba.edu.ar/',
+            'p': 'https://wicc2023.unnoba.edu.ar/'}
 
 WICC_WORKSHOPS_DESCRIPTION = {
     'ARSO': 'Arquitectura, Redes y Sistemas Operativos',
@@ -83,34 +101,43 @@ WICC_WORKSHOPS_DIRECTORIES = {
     'TIAE': 'tecnologia-informatica-aplicada-en-educacion/'
 }
 
+############################################################
+#                                                          #
+#                  Local files and folders                 #
+#                                                          #
+############################################################
+
+RESOURCES_FOLDER = 'resources/'
+LOCAL_ARTICLES_FOLDER = f'{RESOURCES_FOLDER}papers/'
+LOCAL_AUTH_FOLDER = f'{RESOURCES_FOLDER}auth/'
 HTML_TEMPLATE = 'html_template.txt'
 CSS_TEMPLATE = 'css_template.txt'
-
-# Spreadsheet con los datos de los artículos
-INDEX_FILE_ID = '1hOE9pKmfSTRQGrQXNS1O785YWmm2LvZBrUZHK8Tmjm4'
-# Pickle con la lista de archivos subidos
-PICKLE_FILE_ID = {'t': '1H96Z5OQauTEk7Ya5F0xE7qABM0NWHU1A', 'p': '1tXzKqjsz1qy-y5rpIhvKEu33GZDT7PfB'}
-RESOURCES_FOLDER = 'resources/'
+TOKEN_FILE = 'token.json'
+CREDENTIALS_FILE = 'credentials.json'
 FILELIST_PICKLE_FILE_NAME = {'t': 'uploaded_files_test.pickle', 'p': 'uploaded_files_prod.pickle'}
-# Rango de celdas que quieres obtener
-INDEX_FILE_RANGE = 'Sheet1!B1:H174'
-LOCAL_ARTICLES_FOLDER = 'resources/papers/'
 
+
+############################################################
+#                                                          #
+#                     Script Code                          #
+#                                                          #
+############################################################
 
 def get_credentials(scopes=None):
     if scopes is None:
         scopes = SCOPES
     creds = None
-    if os.path.exists('resources/auth/token.json'):
-        creds = Credentials.from_authorized_user_file('resources/auth/token.json', scopes)
+    path_token = os.path.join(LOCAL_AUTH_FOLDER, TOKEN_FILE)
+    path_credentials = os.path.join(LOCAL_AUTH_FOLDER, CREDENTIALS_FILE)
+    if os.path.exists(path_token):
+        creds = Credentials.from_authorized_user_file(path_token, scopes)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'resources/auth/credentials.json', scopes)
+            flow = InstalledAppFlow.from_client_secrets_file(path_credentials, scopes)
             creds = flow.run_local_server(port=0)
-        with open('resources/auth/token.json', 'w') as token:
+        with open(path_token, 'w') as token:
             token.write(creds.to_json())
     return creds
 
