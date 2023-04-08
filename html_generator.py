@@ -311,6 +311,7 @@ def publish_in_wicc(browser, element, pdf, mp3):
 
 
 def main():
+    # Establezco si voy a publicar en el sistema de producción o test de WICC
     global ENVIRONMENT
     while ENVIRONMENT is None:
         selected = input("Ingrese el ambiente (p:producción / t:test): ")
