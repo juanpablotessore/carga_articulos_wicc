@@ -151,6 +151,12 @@ def get_all_files_metadata_in_folders(service, folder_dictionary):
     files_query += ")"
     results = service.files().list(q=files_query, fields="nextPageToken, files(id, name)").execute()
     files = results.get('files', [])
+    next_page_token = results.get('nextPageToken')
+    while next_page_token is not None:
+        results = service.files().list(q=files_query, fields="nextPageToken, files(id, name)",
+                                       pageToken=next_page_token).execute()
+        files.extend(results.get('files', []))
+        next_page_token = results.get('nextPageToken')
     files_metadata = {}
     for file in files:
         if int(file['name'].split('.')[0]) in files_metadata.keys():
@@ -172,7 +178,13 @@ def load_spreadsheet_data(service):
 def get_folder_id(service, folder_name):
     query = "mimeType='application/vnd.google-apps.folder' and trashed = false and name='{}'".format(folder_name)
     results = service.files().list(q=query, fields="nextPageToken, files(id)").execute()
+    next_page_token = results.get('nextPageToken')
     items = results.get('files', [])
+    while next_page_token is not None:
+        results = service.files().list(q=query, fields="nextPageToken, files(id)",
+                                       next_page_token=next_page_token).execute()
+        next_page_token = results.get('nextPageToken')
+        items.extend(results.get('files', []))
     if not items:
         print('No se encontró el directorio')
         return -1
