@@ -13,7 +13,6 @@
   flex-direction: column;
   min-height: max-content;
   font-family: 'Roboto', sans-serif;
-  gap:1rem;
 }
 
 
@@ -134,7 +133,6 @@ audio {
     flex-direction: row;
     min-height: max-content;
     font-family: 'Roboto', sans-serif;
-    gap: 3rem;
   }
 
   .pdf-viewer{
