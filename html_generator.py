@@ -8,6 +8,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+# Para que robobrowser funcione correctamente hay que instalar la versión 0.16.1 de la biblioteca Werkzeug
 import robobrowser
 import getpass
 
